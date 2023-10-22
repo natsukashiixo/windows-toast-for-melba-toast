@@ -13,6 +13,9 @@ temp_dir = os.path.join(os.environ['TEMP'], 'pytwitch_thumb')
 os.makedirs(temp_dir, exist_ok=True)
 abs_temp_dir = abspath(temp_dir)
 
+# twitch channel constant
+MELBA_TOAST = 'https://www.twitch.com/melbathetoast'
+
 def unpack_response(link):
     r = requests.get(link)
     soup = BeautifulSoup(r.text, 'html.parser')
@@ -55,16 +58,16 @@ def clean_temp_folder(folder):
                 os.unlink(file)
 
 if __name__ == '__main__':
-    twitch_link = input("Enter twitch channel link: ")
+    # twitch_link = input("Enter twitch channel link: ")
     while True:
-        ch_name, description, thumbnail, live_status = unpack_response(twitch_link)
+        ch_name, description, thumbnail, live_status = unpack_response(MELBA_TOAST)
         if live_status == True:
-            newToast = build_toast(ch_name, description, thumbnail, live_status, twitch_link)
+            newToast = build_toast(ch_name, description, thumbnail, live_status, MELBA_TOAST)
             toaster.show_toast(newToast)
             toast_sent = True
             while toast_sent:
                 sleep(60) # trying to not get ip banned
-                ch_name, description, thumbnail, live_status = unpack_response(twitch_link)
+                ch_name, description, thumbnail, live_status = unpack_response(MELBA_TOAST)
                 if not live_status:
                     toast_sent = False
                     clean_temp_folder(abs_temp_dir)
