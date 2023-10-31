@@ -14,7 +14,7 @@ os.makedirs(temp_dir, exist_ok=True)
 abs_temp_dir = abspath(temp_dir)
 
 # twitch channel constant
-MELBA_TOAST = 'https://www.twitch.com/melbathetoast'
+MELBA_TOAST = 'https://www.twitch.tv/melbathetoast'
 
 def unpack_response(link):
     r = requests.get(link)
@@ -68,10 +68,12 @@ if __name__ == '__main__':
             while toast_sent:
                 sleep(60) # trying to not get ip banned
                 ch_name, description, thumbnail, live_status = unpack_response(MELBA_TOAST)
-                if not live_status:
+                if live_status == False:
                     toast_sent = False
                     clean_temp_folder(abs_temp_dir)
                     break
                 else:
                     print("live status unchanged")
                     continue
+        else:
+            toast_sent = False
